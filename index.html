@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
     <!-- bootstratp -->
-    <link href="./lib/bootstrap-5.1.3-dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- fontawesome -->
+     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
             integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
             crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -15,8 +16,6 @@
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <link rel="stylesheet" href="./resources/leaflet.contextmenu.css">
      <!--    ***************  Begin  Draw StyleEditor CSS-->
-     <link rel="stylesheet" href="./resources/leaflet-opencage/src/css/L.Control.OpenCageSearch.css">
-     <link rel="stylesheet" href="./resources/leaflet-styleeditor/css/Leaflet.StyleEditor.css">
     <link rel="stylesheet" href="https://edihasaj.github.io/leaflet-coord-projection/coord-projection.css" />
     <link rel="stylesheet"
               href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
@@ -24,21 +23,10 @@
     <link rel="stylesheet"
                   href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
     <link rel="stylesheet" href="./resources/leaflet-geojson-selector.css">
-      <link rel="stylesheet" href="./resources/bigImage.css">
+    <link rel="stylesheet" href="./resources/bigImage.css">
        <!-- <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@3.1.4/dist/esri-leaflet-geocoder.css"> -->
-       
-      
-
-    <!-- leaflet css -->
-     	<!-- <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" /> -->
-        	<!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.css"
-                <integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-                crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-
-
-<!-- <link rel="stylesheet" href="//unpkg.com/leaflet@1.3.4/dist/leaflet.css" /> -->
-     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+ 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
          integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <!-- leaflet plugins -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
@@ -46,7 +34,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
     <link rel="stylesheet" href="./resources/src/easy-button.css">
     <link rel="stylesheet" href="./resources/L.Control.Locate.css">
-    <link rel="stylesheet" href="./resources/Leaflet.PolylineMeasure.css">
     <link rel="stylesheet" href="./resources/leaflet.measure.css">
     <!-- <link rel="stylesheet" href="./resources/leaflet-measure.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css" />
@@ -56,323 +43,413 @@
     <title>Mouad-Tool</title>
 </head>
 <body>
-    <div class="loader">
-        <div class="sk-cube-grid">
-            <div class="sk-cube sk-cube1"></div>
-            <div class="sk-cube sk-cube2"></div>
-            <div class="sk-cube sk-cube3"></div>
-            <div class="sk-cube sk-cube4"></div>
-            <div class="sk-cube sk-cube5"></div>
-            <div class="sk-cube sk-cube6"></div>
-            <div class="sk-cube sk-cube7"></div>
-            <div class="sk-cube sk-cube8"></div>
-            <div class="sk-cube sk-cube9"></div>
-        </div>
-    </div>
 
-    <div class="navvbar">
-        <div class="containe">
-            <div class="header">
-                 <!-- <a href="#" class="title">Mouad-tool</a> -->
-              <ul class="navlinks">
-                <!-- <div id="map" "></div> -->
-                <!-- <li>About</li> -->
-                <li onclick="openTabs()" id="search">Search</li>
-                <!-- <i class="uil uil-file-import"></i> -->
-                <!-- <i class="uil uil-file-export"></i> -->
-                <li onclick="openExportMenu()" id="export" class="export">Export | Import</li>
-             </ul>
-             <div class="projctsel">
-                Selected Projection :
-                <span class="projSe" id="showproj"></span>
-             </div>
-             <a href="#" class="quit" onclick="showExit()"><i class="uil uil-list-ul"></i></a>
-            </div>  
-            <!-- <dib class="searchs">
-               <form action='#' onsubmit="return false;">
-                    <input class="coordinate" type="text" placeholder="X , Y">
-                    <button id="search-btn" class="bt">Search</button>
-               </form>
-            </dib> -->
-        </div>
+<!-- loader -->
+<div class="loader">
+    <div class="sk-cube-grid">
+        <div class="sk-cube sk-cube1"></div>
+        <div class="sk-cube sk-cube2"></div>
+        <div class="sk-cube sk-cube3"></div>
+        <div class="sk-cube sk-cube4"></div>
+        <div class="sk-cube sk-cube5"></div>
+        <div class="sk-cube sk-cube6"></div>
+        <div class="sk-cube sk-cube7"></div>
+        <div class="sk-cube sk-cube8"></div>
+        <div class="sk-cube sk-cube9"></div>
     </div>
-    <div class="exit">
-        <div>
-            <button class="btn" onclick="exit()">Exit</button>
-        </div>
-    </div>
-    <div id="wrapper">
-        
-    </div>
-    <!-- <div class="options">
-        <h4>Zoom level:<span class="zoom-level"></span></h4>
-        <h4>Zoom level:<span class="zoom-move"></span></h4>
-    </div> -->
-    <!-- <div id="mapid" style="width: 800px;float: left;">
-    </div> -->
-    <div id="spinner"></div>
-    <div class="tabs">
-        <a href="#" class="close-btn"><i class="fa-solid fa-xmark"></i></a>
-        <div class="tab-header">
-            <div class="active first">Cartesian </div>
-            <div>Geographic </div>           
-        </div>
-        <div class="tab-indicator"></div>
-        <div class="tab-body">
-            <div class="active first ">
-                <p class="alert">you can't search using this Projection</p>
-               <form action="#" onsubmit="return false;">
-                <div class="inputs">
-                      <input type="text" name="" id="xCar"  class="coordinate"  placeholder="X ">
-                      <input type="text" name="" id="yCar" class="coordinate" placeholder="Y">
-                </div>      
-                <button id="searchbbtn" class="btn">Locate</button>
-            </form>
-            </div>
-            <div>
-                 <form action="#" onsubmit="return false;">
-                     <div class="inputs">
-                         <input type="text" name="" id="xLon" class="coordinate" placeholder="Latitude ">
-                         <input type="text" name="" id="yLat" class="coordinate" placeholder="Longitude">
-                     </div>
-                     <button id="searchbttn" class="btn">Locate</button>
-                 </form>
-            </div>
-        </div>
-    </div>
-    <div class="imxp" >
-        <a href="#" class="close-btn"><i class="fa-solid fa-xmark"></i></a>
-        <div class="export">
-            <h4 class="title">Export</h4>
-            <button class="btn"><a href="#" id="exportgeo">Export GeoJSON</a></button>
-            <!-- <button class="btn"> <a href="#" id="exportshp" onclick="exportShapefile()">Export ShapeFile</a></button> -->
-            <button class="btn"> <a href="#" id="exportkml">Export kml</a></button>
-            <!-- <button class="btn"> <a href="#" id="exportcsv" onclick="exportToCSV()">Export csv</a></button> -->
-        </div>
-        <!-- <div class="line"></div> -->
-        <div class="import">
-            <h4 class="title">Import</h4>
-            <div class="btn">
-                  <label for="geojson-file" type="button">Import GeoJSON</label>
-                  <input type='file' style="display: none" id="geojson-file" accept=".geojson">
-            </div>
-           <div class="btn">
-            <label for="shape-file" type="button">Import ShapeFile</label>
-            <input type='file' style="display: none" id="shape-file" accept=".zip">
-           </div> 
-           <div class="btn">
-            <label for="kml-file" type="button">Import KML file</label>
-            <input type='file' style="display: none" id="kml-file" accept=".kml">
-           </div> 
-           <!-- <div class="btn">
-            <label for="csv-file" type="button">Import Csv</label>
-            <input type='file' style="display: none" id="csv-file" accept=".csv">
-           </div>  -->
+</div>
 
-           <!-- <div class="btn">
-            <label for="csv-file" type="button">Import CSV</label>
-            <input type='file' style="display: none" id="csv-file" accept=".csv">
-           </div>  -->
-        </div>
-    </div>
-   <div id="table_data"></div>
+<!-- selectedProjection**** -->
+<div id="projModal" class="flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-50 to-white p-6">
+    <div class="bg-white shadow-lg rounded-xl p-6 max-w-md w-full border border-indigo-100">
+      
+      <!-- Title -->
+      <h2 class="text-xl font-bold text-indigo-600 text-center mb-6">
+        Select Your Projection
+      </h2>
+      
+      <!-- Options -->
+      <div class="space-y-3">
+        <!-- Option 1 -->
+        <label for="option-1" class="flex items-center p-4 border rounded-lg cursor-pointer transition hover:bg-indigo-50 hover:border-indigo-400">
+          <input type="radio" name="select" id="option-1" checked class="hidden peer">
+          <span class="w-4 h-4 border-2 border-indigo-400 rounded-full flex items-center justify-center mr-3 peer-checked:bg-indigo-500 peer-checked:border-indigo-500">
+            <span class="w-2 h-2 bg-white rounded-full"></span>
+          </span>
+          <span class="text-gray-700 font-medium">WGS 84</span>
+        </label>
 
-      <div class="containr">
-        <div class="wraper">
-        <div class="title">SELECT YOUR ZONE</div>
-        <div class="box">
-          <input type="radio" name="select" id="option-1" checked>
-          <input type="radio" name="select" id="option-2" >
-          <input type="radio" name="select" id="option-3">
-          <input type="radio" name="select" id="option-4">
-          <input type="radio" name="select" id="option-5">
-          <label for="option-1" class="option-1">
-              <div class="dot"></div>
-              <div class="text"><span>WGS 84 </span> </div>
-          </label>
-          <label for="option-2" class="option-2">
-              <div class="dot"></div>
-              <div class="text"><span>Morocco ZONE 1  </span> /  ESPG:26191</div>
-          </label>
-          <label for="option-3" class="option-3">
-              <div class="dot"></div>
-              <div class="text"><span>Morocco ZONE 2 </span> / ESPG:26192</div>
-          </label>
-          <label for="option-4" class="option-4">
-              <div class="dot"></div>
-              <div class="text"><span>Morocco ZONE 3</span> / ESPG:26194</div>
-          </label>
-          <label for="option-5" class="option-5">
-              <div class="dot"></div>
-              <div class="text"><span>Morocco ZONE 4</span> / ESPG:26195</div>
-          </label>
-        </div>
-        <div class="clickBtn">
-            <button class="btn" id="projBtn">Confirmer</button>
-        </div>
-        </div>
+        <!-- Option 2 -->
+        <label for="option-2" class="flex items-center p-4 border rounded-lg cursor-pointer transition hover:bg-indigo-50 hover:border-indigo-400">
+          <input type="radio" name="select" id="option-2" class="hidden peer">
+          <span class="w-4 h-4 border-2 border-indigo-400 rounded-full flex items-center justify-center mr-3 peer-checked:bg-indigo-500 peer-checked:border-indigo-500">
+            <span class="w-2 h-2 bg-white rounded-full"></span>
+          </span>
+          <span class="text-gray-700 font-medium">Morocco ZONE 1 / EPSG:26191</span>
+        </label>
+
+        <!-- Option 3 -->
+        <label for="option-3" class="flex items-center p-4 border rounded-lg cursor-pointer transition hover:bg-indigo-50 hover:border-indigo-400">
+          <input type="radio" name="select" id="option-3" class="hidden peer">
+          <span class="w-4 h-4 border-2 border-indigo-400 rounded-full flex items-center justify-center mr-3 peer-checked:bg-indigo-500 peer-checked:border-indigo-500">
+            <span class="w-2 h-2 bg-white rounded-full"></span>
+          </span>
+          <span class="text-gray-700 font-medium">Morocco ZONE 2 / EPSG:26192</span>
+        </label>
+
+        <!-- Option 4 -->
+        <label for="option-4" class="flex items-center p-4 border rounded-lg cursor-pointer transition hover:bg-indigo-50 hover:border-indigo-400">
+          <input type="radio" name="select" id="option-4" class="hidden peer">
+          <span class="w-4 h-4 border-2 border-indigo-400 rounded-full flex items-center justify-center mr-3 peer-checked:bg-indigo-500 peer-checked:border-indigo-500">
+            <span class="w-2 h-2 bg-white rounded-full"></span>
+          </span>
+          <span class="text-gray-700 font-medium">Morocco ZONE 3 / EPSG:26194</span>
+        </label>
+
+        <!-- Option 5 -->
+        <label for="option-5" class="flex items-center p-4 border rounded-lg cursor-pointer transition hover:bg-indigo-50 hover:border-indigo-400">
+          <input type="radio" name="select" id="option-5" class="hidden peer">
+          <span class="w-4 h-4 border-2 border-indigo-400 rounded-full flex items-center justify-center mr-3 peer-checked:bg-indigo-500 peer-checked:border-indigo-500">
+            <span class="w-2 h-2 bg-white rounded-full"></span>
+          </span>
+          <span class="text-gray-700 font-medium">Morocco ZONE 4 / EPSG:26195</span>
+        </label>
       </div>
-      <div id="map">  
-        <button onclick=showhideTable() class="hide-table-attribute">
-            <a href="#"><i class="uil uil-angle-double-up"></i></a>
-      </button>  
-      <div class="privacy">
+
+      <!-- Button -->
+      <div class="mt-6 text-center">
+        <button id="projBtn" class="px-5 py-2 bg-indigo-600 text-white font-medium rounded-lg shadow hover:bg-indigo-700 transition">
+          Confirm
+        </button>
+      </div>
+    </div>
+</div>
+
+
+<div id="topBar" 
+    class="absolute top-4 left-1/2 transform -translate-x-1/2 
+    bg-white shadow-xl rounded-xl px-6 py-3 flex items-center gap-6 
+    border border-gray-200 z-[1000]">
+
+    <div class="flex items-center gap-2">
+        <i class="fa-solid fa-earth-americas text-indigo-500"></i>
+        <select id="projectionSelect" 
+            class="bg-gray-100 rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 
+            focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none">
+            <option value="">Select Projection</option>
+            <option value="option-1">EPSG:4326 (WGS 84)</option>
+            <option value="option-2">EPSG:26191 (Zone 1)</option>
+            <option value="option-3">EPSG:26192 (Zone 2)</option>
+            <option value="option-4">EPSG:26194 (Zone 3)</option>
+            <option value="option-5">EPSG:26195 (Zone 4)</option>
+      
+        </select>
+    </div>
+
+    <div class="flex items-center gap-4 border-l border-gray-300 pl-6">
+        <button id="openSearchTab" title="Coordinate Search" 
+            class="p-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full shadow transition">
+            <i class="fa-solid fa-magnifying-glass-location"></i>
+        </button>
+
+        <button id="openImportModal" title="Import Files" 
+            class="p-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-full shadow transition">
+            <i class="fa-solid fa-file-import"></i>
+        </button>
+
+        <button id="openExportModal" title="Export Files" 
+            class="p-2 bg-green-500 hover:bg-green-600 text-white rounded-full shadow transition">
+            <i class="fa-solid fa-file-export"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Backdrop -->
+<div id="fileManagementModal" class="hidden fixed inset-0 z-[1001] flex items-center justify-center">
+    <!-- Semi-transparent background -->
+    <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+
+    <!-- Modal content -->
+    <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 border border-gray-200 font-sans z-10">
+
+        <!-- Close button -->
+        <button id="closeFileManagementModal" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-transform duration-200 hover:scale-110">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+
+        <!-- Title -->
+        <h3 class="text-xl text-center font-semibold text-gray-800 mb-6 border-b pb-4">
+            File Management
+        </h3>
+
+        <!-- Grid: Export / Import -->
+        <div class="grid grid-cols-2 gap-8">
+
+            <!-- Export -->
+            <div id="exportSection">
+                <h4 class="text-sm text-center font-bold text-indigo-600 flex items-center justify-center gap-2 mb-4">
+                    <i class="fa-solid fa-download"></i>
+                    Export
+                </h4>
+                <div class="space-y-3">
+                    <button id="exportgeo" class="w-full flex text-sm items-center justify-center gap-2 bg-indigo-500 text-white py-3 rounded-lg  shadow-md hover:bg-indigo-600 transition-all transform hover:scale-105">
+                        <i class="fa-solid fa-file-export"></i>
+                        GeoJSON
+                    </button>
+                    <button id="exportkml" class="w-full flex text-sm items-center justify-center gap-2 bg-purple-500 text-white py-3 rounded-lg  shadow-md hover:bg-purple-600 transition-all transform hover:scale-105">
+                        <i class="fa-solid fa-file-export"></i>
+                        KML
+                    </button>
+                    <button id="exportshp" class="w-full flex text-sm items-center justify-center gap-2 bg-green-500 text-white py-3 rounded-lg  shadow-md hover:bg-green-600 transition-all transform hover:scale-105">
+                        <i class="fa-solid fa-file-export"></i>
+                        ShapeFile (.zip)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Import -->
+            <div id="importSection">
+                <h4 class="text-sm text-center font-bold text-indigo-600 flex items-center justify-center gap-2 mb-4">
+                    <i class="fa-solid fa-upload"></i>
+                    Import
+                </h4>
+                <div class="space-y-3">
+                    <label for="geojson-file" class="block w-full text-center text-sm bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-700 py-3 rounded-lg  transition-all transform hover:scale-105">
+                        <i class="fa-solid fa-file-import mr-2"></i>
+                        GeoJSON
+                    </label>
+                    <input type="file" id="geojson-file" accept=".geojson" class="hidden">
+
+                    <label for="shape-file" class="block w-full text-center text-sm bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-700 py-3 rounded-lg  transition-all transform hover:scale-105">
+                        <i class="fa-solid fa-file-archive mr-2"></i>
+                        ShapeFile (.zip)
+                    </label>
+                    <input type="file" id="shape-file" accept=".zip" class="hidden">
+
+                    <label for="kml-file" class="block w-full text-center text-sm bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-700 py-3 rounded-lg  transition-all transform hover:scale-105">
+                        <i class="fa-solid fa-file-import mr-2"></i>
+                        KML
+                    </label>
+                    <input type="file" id="kml-file" accept=".kml" class="hidden">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="searchTabsModal" class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1001]">
+      <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+    <div class="relative bg-white rounded-xl shadow-2xl w-96 overflow-hidden font-sans border border-gray-100">
+
+        <button id="closeSearchTabsModal" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-transform hover:scale-110">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+
+        <div class="flex border-b relative bg-gray-50">
+            <button id="tab-cartesian" class="tab-btn active flex-1 py-4 text-center font-semibold text-indigo-600 transition-colors duration-300">Cartesian</button>
+            <button id="tab-geographic" class="tab-btn flex-1 py-4 text-center font-semibold text-gray-600 hover:text-indigo-600 transition-colors duration-300">Geographic</button>
+            <div class="tab-indicator absolute bottom-0 h-[3px] bg-indigo-500 transition-all duration-300" style="width: 50%;"></div>
+        </div>
+
+        <div class="p-6">
+            
+            <div id="content-cartesian" class="tab-content active space-y-5">
+                <div class="warningDiv hidden bg-red-50 text-red-700 text-semibold text-md border-l-4 border-red-400 p-4 rounded-md" role="alert">
+                    <p class="font-medium">
+                        <i class="fa-solid fa-triangle-exclamation mr-2"></i>
+                        This projection is not searchable.
+                    </p>
+                </div>
+                <form onsubmit="return false;" class="space-y-4">
+                    <div class="flex gap-4">
+                        <input type="text" id="xCar" placeholder="X Coordinate" class="coordinate w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm">
+                        <input type="text" id="yCar" placeholder="Y Coordinate" class="coordinate w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm">
+                    </div>
+                    <button id="searchbbtn" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-lg shadow-md font-semibold">
+                        <i class="fa-solid fa-crosshairs mr-2"></i>
+                        Locate
+                    </button>
+                </form>
+            </div>
+
+            <div id="content-geographic" class="tab-content hidden space-y-4">
+                <form onsubmit="return false;" class="space-y-4">
+                    <div class="flex gap-4">
+                        <input type="text" id="xLon" placeholder="Longitude" class="coordinate w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm">
+                        <input type="text" id="yLat" placeholder="Latitude" class="coordinate w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm">
+                    </div>
+                    <button id="searchbttn" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-lg shadow-md font-semibold">
+                        <i class="fa-solid fa-crosshairs mr-2"></i>
+                        Locate
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- <div id="map" ></div> -->
+
+
+
+<div id="table_data"></div>
+
+  
+
+<div id="map">  
+    <button onclick=showhideTable() class="hide-table-attribute">
+        <a href="#"><i class="uil uil-angle-double-up"></i></a>
+    </button> 
+
+    <div class="privacy">
         <h5>Created by <a href="https://www.linkedin.com/in/mouad-el-alli/" target="link">MOUAD EL ALLI</a></h5>
-      </div>
-
-      <!-- legend/////////////////// -->
-      <div class="items" >
-        <h6>list files</h6>
-        <div class="item geojson">
-            <p class="color"></p>
-            <p class="file-name"></p>
-            <a href="#" class="delete-item"><i class="uil uil-trash"></i></a>
-        </div>
-        <div class="item shape">
-            <p class="color"></p>
-            <p class="file-name"></p>
-            <a href="#" class="delete-item"><i class="uil uil-trash"></i></a>
-        </div>
-        <div class="item kml">
-            <p class="color"></p>
-            <p class="file-name"></p>
-            <a href="#" class="delete-item"><i class="uil uil-trash"></i></a>
-        </div>
-      </div>
-      <div class="tools">
-        <div class="tool query"  onclick="show_hide_querypanel()">
-        <p class="sho">filter</p>
     </div>
-        <div class='tool legend' onclick="show_hide_legende()">
-            <p class="sho">legende</p>
-        </div>
-      </div>
-      <!-- <dib class="styling">
-        <div class="cont">
-            <div id="red" class="color-choose"></div>
-            <div id="green" class="color-choose"></div>
-            <div id="yellow" class="color-choose"></div>
-            <div id="pink" class="color-choose"></div>
-        </div> -->
-      <!-- </dib>   -->
-   
-    <!-- query_tab --------------- -->
-      </div> 
-      <div id="query_tab" >
-        <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                <label for="layer"><b>Select Layer</b></label>
-                <select id="layer" class="form-select form-select-sm" aria-label=".form-select-sm example">
-                    <option selected>Select Layer</option>
-                </select>
-                <br>
-                <label for="attributes"><b>Select Attribute</b></label>
-                <select id="attributes" class="form-select form-select-sm" aria-label=".form-select-sm example">
-                    <option selected>Select Attribute</option>
-                </select>
-                <br>
-                <label for="operator"><b>Select Attribute</b></label>
-                <select id="operator" class="form-select form-select-sm" aria-label=".form-select-sm example">
-                    <option selected>Select Operator</option>
-                </select>
-                <br>
-                <label for="value">Enter Value</label>
-                <input type="text" class="form-control form-select-sm" id="value" name="value">
-                <br>
-                <button onclick="query()" type="button" class="btn btn-danger btn-sm">Load Layer</button>
-                <button onclick="removeQuery()" type="button" class="btn btn-danger btn-sm">unload query</button>
+
+    <!-- legend/////////////////// -->
+
+    <div class=" fixed bottom-16 right-4 w-80 z-[8888] p-4 space-y-4 bg-transparent">
+
+        <!-- List of files -->
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h6 class="text-md font-semibold text-gray-700 mb-3">List of Files</h6>
+
+            <div class="files space-y-2 max-h-[400px] overflow-y-auto">
+
+                <!-- GeoJSON -->
+                <div class="item geojson flex items-center justify-between bg-gray-50 rounded-md p-3 hover:bg-indigo-50 transition hidden">
+                    <div class="flex items-center gap-3">
+                        <span class="color w-4 h-4 rounded-full bg-green-400"></span>
+                        <p class="file-name text-gray-700 font-medium text-xs"></p>
+                    </div>
+                    <a href="#" class="delete-item text-red-500 hover:text-red-700 transition">
+                        <i class="uil uil-trash"></i>
+                    </a>
+                </div>
+
+                <!-- ShapeFile -->
+                <div class="item shape flex items-center justify-between bg-gray-50 rounded-md p-3 hover:bg-indigo-50 transition hidden">
+                    <div class="flex items-center gap-3">
+                        <span class="color w-4 h-4 rounded-full bg-blue-400"></span>
+                        <p class="file-name text-gray-700 font-medium text-xs"></p>
+                    </div>
+                    <a href="#" class="delete-item text-red-500 hover:text-red-700 transition">
+                        <i class="uil uil-trash"></i>
+                    </a>
+                </div>
+
+                <!-- KML -->
+                <div class="item kml flex items-center justify-between bg-gray-50 rounded-md p-3 hover:bg-indigo-50 transition hidden">
+                    <div class="flex items-center gap-3">
+                        <span class="color w-4 h-4 rounded-full bg-yellow-400"></span>
+                        <p class="file-name text-gray-700 font-medium text-xs"></p>
+                    </div>
+                    <a href="#" class="delete-item text-red-500 hover:text-red-700 transition">
+                        <i class="uil uil-trash"></i>
+                    </a>
+                </div>
 
             </div>
         </div>
-      </div>
+
+    </div>
+
+
+        <!-- Tools -->
+    <div class="flex gap-4">
+        <div class="tool flex-1 bg-indigo-100 text-indigo-700 font-semibold text-center py-2 rounded-md cursor-pointer hover:bg-indigo-200 transition" onclick="show_hide_querypanel()">
+            Filter
+        </div>
+        <div class="tool flex-1 bg-green-100 text-green-700 font-semibold text-center py-2 rounded-md cursor-pointer hover:bg-green-200 transition" onclick="show_hide_legende()">
+            Legend
+        </div>
+    </div>
+
+
+</div> 
+   
 
 
 
 
    
-    <!-- leaflet js -->
-    	<!-- <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script> -->
-        <!-- <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script> -->
-          <!-- <script src="https://unpkg.com/esri-leaflet-geocoder@3.1.4/dist/esri-leaflet-geocoder.js"></script> -->
-         <script src="./lib/bootstrap-5.1.3-dist/js/bootstrap.bundle.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.js"
-            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-           <!-- <script src="//unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script> -->
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script> 
 
-        <!-- esri map -->
-    <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
-    <script src="https://unpkg.com/esri-leaflet-vector@4.0.2/dist/esri-leaflet-vector.js" crossorigin=""></script>
-        <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.js"
+integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- <script src="//unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script> -->
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script> 
+
+<!-- esri map -->
+<script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
+<script src="https://unpkg.com/esri-leaflet-vector@4.0.2/dist/esri-leaflet-vector.js" crossorigin=""></script>
+<script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
 <script src="https://unpkg.com/leaflet.path.drag@0.0.6/src/Path.Drag.js"></script>
 <script src="https://unpkg.com/leaflet-editable@1.2.0/src/Leaflet.Editable.js"></script>
 
-	<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
-    <script src="./resources/leaflet.contextmenu.js"></script>
-    <script src="./resources/L.Control.MousePosition.js"></script>
-    <script src="./resources/src/easy-button.js"></script>
-    <script src="./resources/leaflet-providers.js"></script>
-    <script src="./resources/L.Control.Locate.js"></script>
-    <script src="./resources/leaflet-geojson-selector.js"></script>
-    <script src="./resources/leaflet.measure.js"></script>
-    <script src="./resources/Leaflet.PolylineMeasure.js"></script>
-    <script src="./resources/bigImage.js"></script>
-    <!-- <script src="./resources/leaflet-measure.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
-    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+<script src="./resources/leaflet.contextmenu.js"></script>
+<script src="./resources/L.Control.MousePosition.js"></script>
+<script src="./resources/src/easy-button.js"></script>
+<script src="./resources/leaflet-providers.js"></script>
+<script src="./resources/L.Control.Locate.js"></script>
+<script src="./resources/leaflet-geojson-selector.js"></script>
+<script src="./resources/leaflet.measure.js"></script>
+<script src="./resources/bigImage.js"></script>
+<!-- <script src="./resources/leaflet-measure.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
-      <script src="./resources/L.KML.js"></script>
-      <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'>
-      </script>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-      <!-- <script src="./resources/leaflet.PixiOverlay.js"></script> -->
-     <!-- <script src="https://cdn.jsdelivr.net/npm/leaflet-pixi-overlay@1.9.4/L.PixiOverlay.min.js"></script> -->
-     <script src="./resources/dxf-parser.js"></script>
-          <!-- *************** Begin Draw StyleEditor JS--> 
-       
-   <script type="text/javascript" src="https://edihasaj.github.io/leaflet-coord-projection/coord-projection.js"></script>
-          <!--    ***************  Begin  Draw StyleEditor JS-->
+<script src="./resources/L.KML.js"></script>
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
-          <!-- print plugin -->
-        <script src="./resources/leaflet.browser.print.min.js"></script>
+<script src="./resources/dxf-parser.js"></script>
+<!-- *************** Begin Draw StyleEditor JS--> 
 
-                                <!-- spin -->
-        <script  src="./resources/spin.js"></script>
-        <script src="./resources/tokml.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.1/papaparse.min.js"></script>
+<script type="text/javascript" src="https://edihasaj.github.io/leaflet-coord-projection/coord-projection.js"></script>
+<!--    ***************  Begin  Draw StyleEditor JS-->
 
-         
-          <!-- projection porposes -->
-          <script src="./resources/proj4.js"></script>
-          <script src="./resources/proj4leaflet.js"></script>
+<!-- print plugin -->
+<script src="./resources/leaflet.browser.print.min.js"></script>
 
-          <script src="./resources/catiline.js"></script>       
-          <script src="./resources/leaflet.shpfile.js"></script>
-            <!-- <script src="https://unpkg.com/shpjs"></script> -->
-          <script src=" ./resources/shp.js"> </script>
-         <script defer src="https://unpkg.com/shpjs@latest/dist/shp.js"></script> 
-         <!-- <script src="https://cdn.jsdelivr.net/npm/leaflet.shpfile/dist/leaflet.shpfile.js"></script> -->
-         <!-- <script type="module" src="https://unpkg.com/shp-write@latest/shpwrite.js"></script> -->
-         <script src="https://unpkg.com/shp-write@latest/shpwrite.js"></script>
-         <!-- <script src="https://unpkg.com/shp-write"></script> -->
-
-         <script src="./resources/leaflet.geocsv.js"></script>
-          <!-- togeojson -->
-          <script src="./resources/togeojson.js"></script>
-          <script src="./resources/dxf-parser.js"></script>
-          <!-- jquery file -->
-          <script src="./resources/jquery-3.5.1.js"></script>
-          <script src="./resources/leaflet.ajax.min.js"></script>
-          <script src="https://unpkg.com/geojson-vt@3.2.0/geojson-vt.js"></script>
-          <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
-          <script src="https://unpkg.com/esri-leaflet-geocoder@3.1.4/dist/esri-leaflet-geocoder.js"></script>
+                <!-- spin -->
+<script  src="./resources/spin.js"></script>
+<script src="./resources/tokml.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.1/papaparse.min.js"></script>
 
 
-          <!-- <script src='jam/require.js'></script> -->
-    <!-- main file js -->
-    <script  src="./script.js"></script>
+<!-- projection porposes -->
+<script src="./resources/proj4.js"></script>
+<script src="./resources/proj4leaflet.js"></script>
+
+<script src="./resources/catiline.js"></script>       
+<script src="./resources/leaflet.shpfile.js"></script>
+<!-- <script src="https://unpkg.com/shpjs"></script> -->
+<script src=" ./resources/shp.js"> </script>
+<script defer src="https://unpkg.com/shpjs@latest/dist/shp.js"></script> 
+<!-- <script src="https://cdn.jsdelivr.net/npm/leaflet.shpfile/dist/leaflet.shpfile.js"></script> -->
+<!-- <script type="module" src="https://unpkg.com/shp-write@latest/shpwrite.js"></script> -->
+<script src="https://unpkg.com/shp-write@latest/shpwrite.js"></script>
+<!-- <script src="https://unpkg.com/shp-write"></script> -->
+
+<script src="./resources/leaflet.geocsv.js"></script>
+<!-- togeojson -->
+<script src="./resources/togeojson.js"></script>
+<script src="./resources/dxf-parser.js"></script>
+<!-- jquery file -->
+<script src="./resources/jquery-3.5.1.js"></script>
+<script src="./resources/leaflet.ajax.min.js"></script>
+<script src="https://unpkg.com/geojson-vt@3.2.0/geojson-vt.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
+<script src="https://unpkg.com/esri-leaflet-geocoder@3.1.4/dist/esri-leaflet-geocoder.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script  src="./script.js"></script>
 </body>
 </html>
