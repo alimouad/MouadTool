@@ -345,10 +345,10 @@ input[type="checkbox"] {
 #table_data {
     position: absolute;
     bottom: 0%;
-    overflow: scroll;
     transition: .4s ease;
     text-align: center;
     left: 0%;
+    padding-top: 12px ;
     right: 0%;
     /* border-top: 3px solid #ccc; */
     height: 0%
