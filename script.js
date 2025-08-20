@@ -405,21 +405,39 @@ L.control.bigImage({ position: 'topleft', inputTitle: 'Obtenir image' }).addTo(m
 
 // Job functions****************************************************************
 
-// get selected prjection*********
-const labels = document.querySelectorAll('.option-label');
+// Get elements
+const labels = document.querySelectorAll('.option-label'); // If your labels have this class
 const modal = document.getElementById('projModal');
 const projBtnn = document.getElementById('projBtn');
 
-  labels.forEach(label => {
-    label.addEventListener('click', () => {
-      labels.forEach(l => l.classList.remove('selected-option'));
-      label.classList.add('selected-option');
-    });
-  });
+// Restore the selected projection when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+  const savedProjection = localStorage.getItem('selectedProjection');
+  if (savedProjection) {
+    const input = document.getElementById(savedProjection);
+    if (input) {
+      input.checked = true; // Check the radio button
+      input.parentElement.classList.add('selected-option'); // Add highlight
+    }
+  }
+});
 
-  projBtnn.addEventListener('click', () => {
-    modal.style.display = 'none'; // Close modal
+// Add click event to labels to update selection visually
+labels.forEach(label => {
+  label.addEventListener('click', () => {
+    labels.forEach(l => l.classList.remove('selected-option'));
+    label.classList.add('selected-option');
   });
+});
+
+// Save the selected projection when clicking the button
+projBtnn.addEventListener('click', () => {
+  const selectedInput = document.querySelector('input[name="select"]:checked');
+  if (selectedInput) {
+    localStorage.setItem('selectedProjection', selectedInput.id);
+  }
+  modal.style.display = 'none'; // Close modal
+});
 
   
 
@@ -1371,6 +1389,9 @@ colors.forEach((color) => {
 myMap.on("pm:create", (e) => {
    
     drawnFeatures.addLayer(e.layer);
+    const geojsonData = drawnFeatures.toGeoJSON();
+    const reprojectedGeoJSON = reprojectGeoJSON(geojsonData, "EPSG:4326", selectedProj);
+    localStorage.setItem("projectedGeoJSON", JSON.stringify(reprojectedGeoJSON));
     
 });
 
@@ -1451,7 +1472,7 @@ document.getElementById("exportgeo").addEventListener("click", () => {
 
     const geojsonData = drawnFeatures.toGeoJSON();
     const reprojectedGeoJSON = reprojectGeoJSON(geojsonData, "EPSG:4326", selectedProj);
-    localStorage.setItem("projectedGeoJSON", JSON.stringify(reprojectedGeoJSON));
+    
     if (reprojectedGeoJSON) {
         downloadFile(
             JSON.stringify(reprojectedGeoJSON, null, 2),
