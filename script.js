@@ -46,6 +46,15 @@ var bnprjct3 = "+proj=lcc +lat_1=26.1 +lat_0=26.1 +lon_0=-5.4 +k_0=0.999616304 +
 var bnprjct4 = "+proj=lcc +lat_1=22.5 +lat_0=22.5 +lon_0=-5.4 +k_0=0.999616437 +x_0=1500000 +y_0=400000 +a=6378249.2 +b=6356515 +towgs84=31,146,47,0,0,0,0 +units=m +no_defs ";
 let proArr = [bnprojct1, bnprojct2, bnprjct3, bnprjct4]
 
+// Register them in proj4
+proj4.defs("EPSG:4326", spl);
+proj4.defs("BN:1", bnprojct1);
+proj4.defs("BN:2", bnprojct2);
+proj4.defs("BN:3", bnprjct3);
+proj4.defs("BN:4", bnprjct4);
+
+let proArrs = ["BN:1", "BN:2", "BN:3", "BN:4"]; // use registered names
+
 // projection for mouse hover/////
 var resolutions = [4000, 3750, 3500, 3250, 3000, 2750, 2500, 2250, 2000, 1750, 1500, 1250,
     1000, 750, 650, 500, 250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.1];
@@ -102,7 +111,7 @@ var selected;
 var layerControl;
 var drawnFeatures
 var layerKml
-var shapefile
+
 var geoSearch
 var items = [];
 var data
@@ -168,18 +177,18 @@ layerControl.addOverlay(drawnFeatures, "drawn");
 
 // geocoder////////////
 L.Control.geocoder({
-    position: 'topright'
+    position: 'topleft'
 }).addTo(myMap);
 
 // Distance and area measurement
 L.control.measure({
     // collapsed: false,
-    title : "mesurer la surface"
+    title : "Surface Measurement"
 }).addTo(myMap);
 
 
 L.Measure = {
-    linearMeasurement: "masurer la Distance ",
+    linearMeasurement: "mesurer la Distance ",
     areaMeasurement: "mesurer la surface",
     start: "Start",
     meter: "m",
@@ -192,11 +201,6 @@ L.Measure = {
 // Routing///////////
 var control = L.Routing.control({
     position: "topright",
-    // waypoints: [
-    //     L.latLng(30.77172, -7.232),
-    //     L.latLng(32.77172, -6.232),
-    // ],
-    // showAlternatives: true,
     altineOptions: {
         styles: [
             { color: "black", opacity: 0.15, weight: 9 },
@@ -391,19 +395,8 @@ myMap.pm.addControls({
         rotateMode: false,
         layerGroup: drawnFeatures
 });
-// myMap.pm.setGlobalOptions({
-//     layerGroup: drawnFeatures
-// })
-myMap.on('pm:create', (workingLayer) => {
-    drawnFeatures.addLayer(workingLayer.layer);
 
-    
-})
-myMap.on('pm:edit', (workingLayer) => {
-//     layer.bindPopup(`<p>${JSON.stringify(layer.toGeoJSON())}</p>`)
-    drawnFeatures.addLayer(workingLayer.layer);
-    
-})
+
 
 // down image
 L.control.bigImage({ position: 'topleft', inputTitle: 'Obtenir image' }).addTo(myMap);
@@ -428,22 +421,43 @@ const projBtnn = document.getElementById('projBtn');
     modal.style.display = 'none'; // Close modal
   });
 
+  
 
-// click on links to show menu************
+  // Get elements
+  const searchTabsModal = document.getElementById("searchTabsModal");
+  const closeSearchTabsModal = document.getElementById("closeSearchTabsModal");
+  const overlay = searchTabsModal.querySelector(".absolute.inset-0");
 
-const tabBtns = document.querySelectorAll(".tab-btn");
+  
+  // Close modal
+  function closeModal() {
+    searchTabsModal.classList.add("hidden");
+  }
+
+  // Event listeners
+  closeSearchTabsModal.addEventListener("click", closeModal);
+  overlay.addEventListener("click", closeModal);
+
+  // Optional: Close with Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !searchTabsModal.classList.contains("hidden")) {
+      closeModal();
+    }
+  });
+
+  // Tabs
+  const tabBtns = document.querySelectorAll(".tab-btn");
   const tabContents = document.querySelectorAll(".tab-content");
   const tabIndicator = document.querySelector(".tab-indicator");
 
   tabBtns.forEach((btn, idx) => {
     btn.addEventListener("click", () => {
-      document.querySelector(".tab-btn.active").classList.remove("active", "text-indigo-600");
-      document.querySelector(".tab-btn.active")?.classList.add("text-gray-600");
+      document.querySelector(".tab-btn.active")?.classList.remove("active", "text-indigo-600");
       btn.classList.add("active", "text-indigo-600");
       btn.classList.remove("text-gray-600");
 
-      document.querySelector(".tab-content.active").classList.remove("active");
-      document.querySelector(".tab-content:not(.hidden)").classList.add("hidden");
+      document.querySelector(".tab-content.active")?.classList.remove("active");
+      document.querySelector(".tab-content:not(.hidden)")?.classList.add("hidden");
       tabContents[idx].classList.remove("hidden");
       tabContents[idx].classList.add("active");
 
@@ -451,16 +465,18 @@ const tabBtns = document.querySelectorAll(".tab-btn");
     });
   });
 
-
   // Search button → open Search Tabs popup
-document.getElementById('openSearchTab').addEventListener('click', () => {
-  document.querySelector('#searchTabsModal').classList.toggle('hidden');
-  // Optionally force to show first tab
-  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-  document.querySelector('.tab-btn:first-child').classList.add('active');
-  document.querySelector('.tab-content:first-child').classList.remove('hidden');
-});
+  document.getElementById("openSearchTab").addEventListener("click", () => {
+    searchTabsModal.classList.remove("hidden");
+
+    // Reset tabs to first tab
+    document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(tab => tab.classList.add("hidden"));
+    document.querySelector(".tab-btn:first-child").classList.add("active");
+    document.querySelector(".tab-content:first-child").classList.remove("hidden");
+  });
+
+
 
 
 
@@ -486,7 +502,7 @@ function openModal(highlight) {
 }
 
 // Close modal helper
-function closeModal() {
+function closeModalSearch() {
   fileModal.classList.add("hidden");
 }
 
@@ -501,14 +517,17 @@ document.getElementById("openExportModal").addEventListener("click", () => {
 
 
 
-closeModalBtn.addEventListener("click", closeModal);
+closeModalBtn.addEventListener("click", closeModalSearch);
 
 // Optional: close if clicking outside modal content
 fileModal.addEventListener("click", (e) => {
   if (e.target === fileModal) {
-    closeModal();
+    closeModalSearch();
   }
 });
+
+
+
 
 
 
@@ -558,6 +577,7 @@ function searchWgs() {
 
 // Main projection selection handler
 const projBtn = document.querySelector('#projBtn');
+let selectedProj;
 
 projBtn.addEventListener('click', () => {
     const checkedInput = document.querySelector("input[name='select']:checked");
@@ -571,12 +591,14 @@ projBtn.addEventListener('click', () => {
         // contPro comes from your modal selection
 
     const selectedId = checkedInput.id; // option-1, option-2, ...
+   
 
 
     // Set dropdown directly by value
     const projectionSelect = document.getElementById('projectionSelect');
     const warningDiv = document.querySelector('.warningDiv');
     projectionSelect.value = selectedId;
+
 
 
     
@@ -599,6 +621,7 @@ projBtn.addEventListener('click', () => {
 
         case "option-2":
             pro = proArr[0];
+            selectedProj = proArrs[0];
             btnCo.onclick = () => searchCoord(pro);
             btnWgs.onclick = () => searchWgs();
             L.control.coordProjection({
@@ -611,6 +634,8 @@ projBtn.addEventListener('click', () => {
 
         case "option-3":
             pro = proArr[1];
+            selectedProj = proArrs[1];
+
             btnCo.onclick = () => searchCoord(pro);
             btnWgs.onclick = () => searchWgs();
             L.control.coordProjection({
@@ -623,6 +648,7 @@ projBtn.addEventListener('click', () => {
 
         case "option-4":
             pro = proArr[2];
+              selectedProj = proArrs[2];
             btnCo.onclick = () => searchCoord(pro);
             btnWgs.onclick = () => searchWgs();
             L.control.coordProjection({
@@ -635,6 +661,7 @@ projBtn.addEventListener('click', () => {
 
         case "option-5":
             pro = proArr[3];
+              selectedProj = proArrs[3];
             btnCo.onclick = () => searchCoord(pro);
             btnWgs.onclick = () => searchWgs();
             L.control.coordProjection({
@@ -665,10 +692,76 @@ function showhideTable() {
     document.getElementById('map').classList.toggle('map_active')
     document.getElementById('table_data').classList.toggle('table_active')
 }
-function show_hide_legende() {
-    document.querySelector(".items").classList.toggle("afficher")
-}
 
+
+
+
+
+
+
+const fileItems = document.querySelectorAll('.item');
+const deleteItems = document.querySelectorAll('.delete-item');
+
+fileItems.forEach(item => {
+    const fileNameEl = item.querySelector('.file-name');
+
+    // Click on file name → fly to bounds
+    fileNameEl.addEventListener('click', () => {
+        if (item.classList.contains('geojson') && geoData) {
+            myMap.flyToBounds(geoData.getBounds());
+        } else if (item.classList.contains('shape') && shapefile) {
+            myMap.flyToBounds(shapefile.getBounds());
+        } else if (item.classList.contains('kml') && layerKml) {
+            myMap.flyToBounds(layerKml.getBounds());
+        }
+    });
+});
+
+// Click delete → confirm → remove layer & hide item
+deleteItems.forEach(delBtn => {
+    delBtn.addEventListener('click', e => {
+        e.preventDefault(); // prevent link navigation
+        const item = delBtn.closest('.item');
+        if (!item) return;
+
+        // Ask the user
+        const confirmDelete = confirm("Do you really want to remove this layer?");
+        if (!confirmDelete) return;
+
+        // Hide UI element
+        item.classList.add('hidden');
+
+        // Remove from map & control
+        if (item.classList.contains('geojson') && geoData) {
+            myMap.removeLayer(geoData);
+            layerControl.removeLayer(geoData);
+            geoData = null;
+        } 
+        else if (item.classList.contains('shape') && shapefile) {
+            myMap.removeLayer(shapefile);
+            layerControl.removeLayer(shapefile);
+            shapefile = null;
+        } 
+        else if (item.classList.contains('kml') && layerKml) {
+            myMap.removeLayer(layerKml);
+            layerControl.removeLayer(layerKml);
+            layerKml = null;
+        }
+
+        // Clear table and reset map
+        clear_all();
+
+        // Optionally fly to another layer if exists
+        if (geoData) myMap.flyToBounds(geoData.getBounds());
+        else if (shapefile) myMap.flyToBounds(shapefile.getBounds());
+        else if (layerKml) myMap.flyToBounds(layerKml.getBounds());
+    });
+});
+
+
+
+
+// Attribute Table **********
 
 function findRowNumber(cn1, v1) {
     var table = document.querySelector('#table');
@@ -685,6 +778,8 @@ function findRowNumber(cn1, v1) {
 }
 
 // 
+
+// files functions********
 function coordsToLatLng(coords) {
     let srs;
 
@@ -724,165 +819,102 @@ function coordsToLatLng(coords) {
     return srs.unproject(L.point(coords[0], coords[1]));
 }
 
+
 function onEachFeature(feature, layer) {
-    
-    if (feature.properties && feature.properties.name) {
-        layer.bindPopup(feature.properties.name, { closeButton: false, offset: L.point(0, 0) });
-            layer.on('mouseover', function () { layer.openPopup(); });
-            layer.on('mouseout', function () { layer.closePopup(); });
-    }
-    if (feature.properties && feature.properties.type) {
-        layer.bindPopup(feature.properties.type,{ closeButton: false, offset: L.point(0, 0) });
-            layer.on('mouseover', function () { layer.openPopup(); });
-            layer.on('mouseout', function () { layer.closePopup(); });
-    }
-    layer.on('mouseover', function (e) {
-        e.target.setStyle({
-            fillOpacity: 0.8
-        });
-    });
-   
-    layer.on('mouseout', function (e) {
-        e.target.setStyle({
-            fillOpacity: 0.2
-        });
-    });
-    // layer.on('click', function (e) {
-    //     geoData.resetStyle(e.target);
-    //     e.target.setStyle({
-    //         fillOpacity: 0.2,
-    //         'color': 'blue'
-    //     });
-    // });
-
-
-       layer.on('click', function (e) {
-        
-        // e = event
-        // Reset selected to default style
-        if (selected) {
-            // Reset selected to default style
-            geoData.resetStyle(selected);
+    // --- Popup binding (Consolidated) ---
+    if (feature.properties) {
+        const popupContent = feature.properties.name || feature.properties.type;
+        if (popupContent) {
+            layer.bindPopup(popupContent, {
+                closeButton: false,
+                offset: L.point(0, -10)
+            });
         }
-        selected = e.target;
-        selected.setStyle({
-            'color': 'red'
-        });
+    }
 
-        if (feature) {
-            let tablee = document.querySelector('#table_data')
-            if (!tablee.classList.contains('table_active')) {
-
-                tablee.classList.add('table_active')
-                document.querySelector('#map').classList.add('map_active')
+    // --- Unified Event Listeners for Hover and Click ---
+    layer.on({
+        // Handle mouseover events for both popup and style changes
+        mouseover: (e) => {
+            e.target.setStyle({ fillOpacity: 0.8 });
+            if (e.target.getPopup()) {
+                e.target.openPopup();
             }
-            // console.log(feature);
-            $(function () {
-                $("#table td").each(function () {
-                    $(this).parent("tr").css("background-color", "#fcfcfc");
+        },
+
+        // Handle mouseout events for both popup and style changes
+        mouseout: (e) => {
+            if (e.target !== selected) {
+                e.target.setStyle({ fillOpacity: 0.2 });
+            }
+            if (e.target.getPopup()) {
+                e.target.closePopup();
+            }
+        },
+
+        // Handle click events
+        click: (e) => {
+            // Reset the style of the previously selected layer, if it exists
+            if (selected) {
+                selected.setStyle({
+                    fillOpacity: 0.2,
+                    color: '#3388ff' // Revert to default Leaflet blue
                 });
-            });
-        }
-
-        var table = document.getElementById('table');
-        var cells = table.getElementsByTagName('td');
-        var rows = document.getElementById("table").rows;
-        var heads = table.getElementsByTagName('th');
-        var col_no;
-        for (var i = 0; i < heads.length; i++) {
-            // Take each cell
-            var head = heads[i];
-            //alert(head.innerHTML);
-            if (head.innerHTML == 'id') {
-                col_no = i + 1;
-                // alert(col_no);
             }
-        }
-        var row_no = findRowNumber(col_no, feature.id);
-        //alert(row_no);
-        var rows = document.querySelectorAll('#table tr');
-        rows[row_no].scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
-        });
 
-        $(document).ready(function () {
-            $("#table td:nth-child(" + col_no + ")").each(function () {
-
-                if ($(this).text() == feature.id) {
-                    $(this).parent("tr").css("background-color", "grey");
-
-                }
+            // Set the new selected layer and apply click style
+            selected = e.target;
+            selected.setStyle({
+                color: 'red',
+                fillOpacity: 0.6 // Make it more distinct on click
             });
+
+            // Update UI elements based on the click
+            updateUI(feature.properties);
+        }
+    });
+}
+function updateUI(properties) {
+    try {
+        const tableContainer = document.querySelector("#table_data");
+        const mapContainer = document.querySelector("#map");
+
+        if (!tableContainer || !mapContainer) {
+            console.warn("Missing table or map container");
+            return;
+        }
+
+        // Show the table and adjust map layout
+        if (!tableContainer.classList.contains("table_active")) {
+            tableContainer.classList.add("table_active");
+            mapContainer.classList.add("map_active");
+        }
+
+        // ✅ Always use our internal fid
+        const featureId = properties.__fid || properties.id || properties.ID || properties.name;
+        if (!featureId) {
+            console.warn("No valid feature ID found in properties");
+            return;
+        }
+
+        // Reset all highlights
+        document.querySelectorAll("#table_data tr").forEach(row => {
+            row.classList.remove("highlight", "bg-gray-300", "font-bold");
         });
-    });
-    var att = feature.properties;
-    // return layer.bindTooltip(att[2], { permanent: false, direction: "center" }).openTooltip();
-};
 
-
-
-
-
-
-
-const fileItems = document.querySelectorAll('.item');
-const deleteItems = document.querySelectorAll('.delete-item');
-
-fileItems.forEach(item => {
-    const fileNameEl = item.querySelector('.file-name');
-
-    // Click on file name → fly to bounds
-    fileNameEl.addEventListener('click', () => {
-        if (item.classList.contains('geojson') && geoData) {
-            myMap.flyToBounds(geoData.getBounds());
-        } else if (item.classList.contains('shape') && shapefile) {
-            myMap.flyToBounds(shapefile.getBounds());
-        } else if (item.classList.contains('kml') && layerKml) {
-            myMap.flyToBounds(layerKml.getBounds());
+        // Highlight the corresponding row
+        const rowToHighlight = document.querySelector(`[data-feature-id="${featureId}"]`);
+        if (rowToHighlight) {
+            rowToHighlight.scrollIntoView({ behavior: "smooth", block: "center" });
+            rowToHighlight.classList.add("highlight", "bg-gray-300", "font-bold");
+        } else {
+            console.warn(`No row found for feature ID: ${featureId}`);
         }
-    });
-});
+    } catch (err) {
+        console.error("Error updating UI:", err);
+    }
+}
 
-// Click delete → remove layer & hide item
-deleteItems.forEach(delBtn => {
-    delBtn.addEventListener('click', e => {
-        e.preventDefault(); // prevent link navigation
-        const item = delBtn.closest('.item');
-        if (!item) return;
-
-        item.classList.add('hidden'); // hide UI element
-
-        if (item.classList.contains('geojson') && geoData) {
-            myMap.removeLayer(geoData);
-            layerControl.removeLayer(geoData);
-            geoData = null;
-        } 
-        else if (item.classList.contains('shape') && shapefile) {
-            myMap.removeLayer(shapefile);
-            layerControl.removeLayer(shapefile);
-            shapefile = null;
-        } 
-        else if (item.classList.contains('kml') && layerKml) {
-            myMap.removeLayer(layerKml);
-            layerControl.removeLayer(layerKml);
-            layerKml = null;
-        }
-
-        // Clear table and reset map
-        clear_all();
-
-        // Optionally fly to another layer if exists
-        if (geoData) myMap.flyToBounds(geoData.getBounds());
-        else if (shapefile) myMap.flyToBounds(shapefile.getBounds());
-        else if (layerKml) myMap.flyToBounds(layerKml.getBounds());
-    });
-});
-
-
-
-
-// Attribute Table **********
 
 function hundle(data) {
     // Extract columns
@@ -895,7 +927,7 @@ function hundle(data) {
 
     // Create table container
     const divContainer = document.getElementById("table_data");
-    divContainer.innerHTML = ""; // clear previous
+    divContainer.innerHTML = "";
     const tableWrapper = document.createElement("div");
     tableWrapper.className = "overflow-x-auto max-h-[400px] border rounded-lg shadow";
 
@@ -903,13 +935,13 @@ function hundle(data) {
     table.className = "min-w-full divide-y divide-gray-200 text-sm";
     table.id = "table";
 
-    // Table caption
+    // Caption
     const caption = document.createElement("caption");
     caption.className = "text-gray-700 text-center font-semibold mb-2";
     caption.textContent = `Number of Features: ${data.features.length}`;
     table.appendChild(caption);
 
-    // Table header
+    // Header
     const thead = document.createElement("thead");
     const trHead = document.createElement("tr");
     col.forEach(c => {
@@ -921,20 +953,21 @@ function hundle(data) {
     thead.appendChild(trHead);
     table.appendChild(thead);
 
-    // Table body
+    // Body
     const tbody = document.createElement("tbody");
-    
-    data.features.forEach((feature, index) => {
-        const tr = document.createElement("tr");
+    data.features.forEach((feature, i) => {
+        // ✅ Generate a stable fid
+        const featureId = feature.id || feature.properties.id || feature.properties.name || `fid-${i+1}`;
+        feature.properties.__fid = featureId; // store internally
 
-       
-        tr.style.backgroundColor = '#6366F1';
-        tr.className = "hover:bg-blue-00 cursor-pointer transition-colors";
+        const tr = document.createElement("tr");
+        tr.setAttribute("data-feature-id", featureId);
+        tr.className = "hover:bg-blue-100 cursor-pointer transition-colors";
 
         col.forEach((c, idx) => {
             const td = document.createElement("td");
-            td.className = "px-4 py-2 text-white";
-            td.textContent = idx === 0 ? feature.id : feature.properties[c] ?? "";
+            td.className = "px-4 py-2";
+            td.textContent = idx === 0 ? featureId : feature.properties[c] ?? "";
             tr.appendChild(td);
         });
 
@@ -948,33 +981,42 @@ function hundle(data) {
     myMap.invalidateSize();
 }
 
+
 function addRowHandlers() {
     const table = document.getElementById("table");
+    if (!table) return; 
+
     const rows = table.querySelectorAll("tbody tr");
-    const idColIndex = Array.from(table.querySelectorAll("th")).findIndex(th => th.textContent === "id");
 
     rows.forEach(row => {
         row.addEventListener("click", () => {
-            // Reset previous selection
-            rows.forEach(r => r.classList.remove("bg-gray-300"));
-            row.classList.add("bg-gray-300");
+            rows.forEach(r => r.classList.remove("bg-gray-300", "font-bold"));
+            row.classList.add("bg-gray-300", "font-bold");
 
-            const id = row.cells[idColIndex].textContent;
+            const fid = row.getAttribute("data-feature-id");
 
-            // Reset map styles
-            if (geoData) geoData.resetStyle();
+            if (geoData && geoData.resetStyle) geoData.resetStyle();
 
-            // Highlight selected feature
-            const features = geoData.getLayers();
-            features.forEach(f => {
-                if (f.feature.id == id) {
-                    f.setStyle({ color: "red" });
-                    myMap.flyToBounds(f.getBounds());
+            if (geoData) {
+                const features = geoData.getLayers();
+                const match = features.find(f => {
+                    const fidCandidate = f.feature.properties?.__fid || f.feature.id;
+                    return String(fidCandidate) === fid;
+                });
+
+                if (match) {
+                    match.setStyle({ color: "red", weight: 3, fillOpacity: 0.6 });
+                    myMap.flyToBounds(match.getBounds(), { padding: [50, 50] });
+                } else {
+                    console.warn(`Feature with fid=${fid} not found in GeoJSON.`);
                 }
-            });
+            }
+
+            row.scrollIntoView({ behavior: "smooth", block: "center" });
         });
     });
 }
+
 
 function clear_all() {
     const tableContainer = document.getElementById("table_data");
@@ -988,10 +1030,12 @@ function clear_all() {
 function handleFileUpload(file, data, fileType, layer) {
     // Select the corresponding item dynamically
     const item = document.querySelector(`.item.${fileType}`);
+    const filesItems = document.querySelector('.listFiles')
     const fileNameEl = item.querySelector('.file-name');
 
     // Show the item and update its name
-    item.classList.remove('hidden');  // <-- show the item
+    filesItems.classList.remove('hidden');  // <-- show the item
+    item.classList.remove('hidden'); // Show the specific file type item
     fileNameEl.textContent = file.name;
 
     // Fly to the layer bounds and add overlay
@@ -1043,108 +1087,74 @@ function handleFileSelect(event) {
         // Show the table container
         document.querySelector('.hide-table-attribute').style.display = 'flex';
 
-        alert('The file uploaded successfully!');
+        alert('The file was uploaded successfully ✅');
     };
     reader.readAsText(file);
 }
-
-
-
-
-
-// export data //////
-document.getElementById('exportgeo').onclick = function (e) {
-    // Extract GeoJson from featureGroup
-    var data = drawnFeatures.toGeoJSON();
-    // var projGeoJSON = event.layer.toGeoJSON();
-    // Stringify the GeoJson
-    var convertedData = 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data));
-
-    // Create export
-    document.getElementById('exportgeo').setAttribute('href', 'data:' + convertedData);
-    document.getElementById('exportgeo').setAttribute('download', 'mouad.geojson');
-}
-
-
-
-// export KML data //////
-document.getElementById('exportkml').onclick = function (e) {
-    // Extract GeoJson from featureGroup
-    var data = drawnFeatures.toGeoJSON();
-    // Stringify the GeoJson
-    var kml = tokml(data);
-    var convertedData = 'application/xml;charset=utf-8,' + encodeURIComponent(kml);
-    // if you want to use the official MIME type for KML
-    // var convertedData = 'application/vnd.google-earth.kml+xml;charset=utf-8,' + 
-    // encodeURIComponent(kml);
-
-    document.getElementById('exportkml').setAttribute('href', 'data:' + convertedData);
-    document.getElementById('exportkml').setAttribute('download', 'data.kml');
-}
-
 
 // import kml========================>>>>>>>>>>>>>////////
 document.getElementById('kml-file').addEventListener('change', (e) => {
-        if (layerKml) {
-        overlays.clearLayers();
-        layerControl.removeLayer(layerKml)
-        myMap.removeLayer(layerKml);
-        fileNameKml.textContent = ''
-    }
     let file = e.target.files[0];
-    var reader = new FileReader();
+    if (!file) {
+        alert("No file selected!");
+        return;
+    }
 
-    reader.onload = function (e) {
-        var kmlStr = e.target.result;
-        var parser = new DOMParser();
-        var kmlDoc = parser.parseFromString(kmlStr, 'text/xml');
+    // Remove old KML layer if it exists
+    if (layerKml) {
+        overlays.clearLayers();
+        layerControl.removeLayer(layerKml);
+        myMap.removeLayer(layerKml);
+        if (fileNameKml) fileNameKml.textContent = '';
+    }
 
-        var geojson = toGeoJSON.kml(kmlDoc);
-        layerKml = L.geoJson(geojson, {
-            onEachFeature: onEachFeature,
-            coordsToLatLng: coordsToLatLng,
+    let reader = new FileReader();
+
+    reader.onload = function (event) {
+        try {
+            let kmlStr = event.target.result;
+            let parser = new DOMParser();
+            let kmlDoc = parser.parseFromString(kmlStr, 'text/xml');
+
+            let geojson = toGeoJSON.kml(kmlDoc);
+
+            layerKml = L.geoJson(geojson, {
+                onEachFeature: onEachFeature,
+                coordsToLatLng: coordsToLatLng,
+                style: Ethnic2Style,
+            }).addTo(myMap);
+
+            myMap.flyToBounds(layerKml.getBounds(), { padding: [12, 12] });
+            layerControl.addOverlay(layerKml, file.name);
+
             
-            style: Ethnic2Style,
-        }).addTo(myMap); // Add the KML data as a GeoJSON layer to the map 
-        myMap.flyToBounds(layerKml.getBounds())
-        layerControl.addOverlay(layerKml, file.name);
-        setTimeout(showLegend, 1000)
-        itemKml.classList.add('showe')
-        fileNameKml.textContent = file.name
+
+             // Use the unified handleFileUpload function
+            handleFileUpload(file, data, 'kml', layerKml);
+
+            alert('The file was uploaded successfully ✅');
+        } catch (err) {
+            console.error("Error loading KML:", err);
+            alert("Invalid KML file!");
+        }
     };
 
     reader.readAsText(file);
-    alert('the file ulpoaded successfully')
-    // checked()
-
 });
-
-
-
-// import csv=================================>>>>>>>>>>>>//////////////////
-var markers = [];
-
-
-
-
-function clearMarkers() {
-    markers.forEach(function (marker) {
-        myMap.removeLayer(marker);
-    });
-    markers = [];
-}
-
-
-// export to CSV/////////////////
 
 
 // import shapefile///////////
 
+// Declare globally
+let shapefile = null;
+
 document.getElementById('shape-file').addEventListener('change', function (event) {
+    // Clear previous shapefile if exists
     if (shapefile) {
         overlays.clearLayers();
         layerControl.removeLayer(shapefile);
         myMap.removeLayer(shapefile);
+        shapefile = null;
     }
 
     const file = event.target.files[0];
@@ -1157,50 +1167,65 @@ document.getElementById('shape-file').addEventListener('change', function (event
     reader.onload = function (e) {
         const data = e.target.result;
 
-        // Convert Shapefile (zip) to GeoJSON using shpjs
         shp(data).then(function (geojson) {
+            // Assign internal fid for sync between table & map
+            geojson.features.forEach((feature, i) => {
+                feature.properties.__fid =
+                    feature.id ||
+                    feature.properties.id ||
+                    feature.properties.name ||
+                    `fid-${i + 1}`;
+            });
+
+            // Add shapefile to map
             shapefile = L.geoJson(geojson, {
                 style: Ethnic1Style,
                 coordsToLatLng: coordsToLatLng,
-                onEachFeature: onEachFeature,
+                onEachFeature: function (feature, layer) {
+                    // Attach fid to layer
+                    layer.feature.properties.__fid = feature.properties.__fid;
+                    if (typeof onEachFeature === "function") {
+                        onEachFeature(feature, layer); // call your existing handler if defined
+                    }
+                }
             }).addTo(myMap);
 
+            // Add to layer control
             layerControl.addOverlay(shapefile, file.name);
 
-            // Show in file list
+            // Show file name in UI
             const itemShp = document.querySelector(".item.shape");
             if (itemShp) {
                 itemShp.classList.remove("hidden");
                 itemShp.querySelector(".file-name").textContent = file.name;
             }
 
-            // Show legend
+            // Show legend (your custom function)
             handleFileUpload(file, data, 'shape', shapefile);
 
-            // Fit map to shapefile
+            // Zoom to shapefile bounds
             myMap.flyToBounds(shapefile.getBounds());
 
-            // Build column list
-            const col = ["id"];
+            // ---- Build Enhanced Table ----
+            const col = ["__fid"]; // ✅ use fid as first column
             geojson.features.forEach(f => {
                 for (const key in f.properties) {
                     if (!col.includes(key)) col.push(key);
                 }
             });
 
-                        // Create enhanced table
             const table = document.createElement("table");
             table.className = "min-w-full border border-gray-200 rounded-lg overflow-hidden shadow-md";
             table.id = "table";
 
-            // Caption (styled)
+            // Caption
             const caption = document.createElement("caption");
             caption.id = "caption";
             caption.className = "bg-gray-100 text-gray-700 font-semibold py-2 px-4 text-left";
             caption.textContent = `Number of Features: ${geojson.features.length}`;
             table.appendChild(caption);
 
-            // Table header
+            // Header
             const thead = document.createElement("thead");
             thead.className = "bg-indigo-600 text-white";
             let tr = document.createElement("tr");
@@ -1214,17 +1239,19 @@ document.getElementById('shape-file').addEventListener('change', function (event
             thead.appendChild(tr);
             table.appendChild(thead);
 
-            // Table body
+            // Body
             const tbody = document.createElement("tbody");
-            geojson.features.forEach((feature, i) => {
+            geojson.features.forEach(feature => {
+                const fid = feature.properties.__fid; // ✅ always use fid
                 const row = document.createElement("tr");
-                row.className = i % 2 === 0 ? "bg-white hover:bg-indigo-50" : "bg-gray-50 hover:bg-indigo-100 transition";
+                row.className = "hover:bg-indigo-100 cursor-pointer transition-colors";
+                row.setAttribute("data-feature-id", fid);
 
                 col.forEach((key, j) => {
                     const cell = document.createElement("td");
                     cell.className = "py-2 px-3 text-sm text-gray-700 border-b border-gray-200";
                     if (j === 0) {
-                        cell.textContent = feature.id || i + 1;
+                        cell.textContent = fid;
                         cell.classList.add("font-semibold");
                     } else {
                         cell.textContent = feature.properties[key] ?? "";
@@ -1238,20 +1265,19 @@ document.getElementById('shape-file').addEventListener('change', function (event
 
             // Insert into container
             const divContainer = document.getElementById("table_data");
-            divContainer.innerHTML = "";
+            divContainer.innerHTML = ""; // clear previous
             divContainer.appendChild(table);
 
-            // Keep your existing extra logic
+            // Row handlers (map <-> table sync)
             addRowHandlers();
             myMap.invalidateSize();
 
-            alert("The file uploaded successfully");
+            alert('The file was uploaded successfully ✅');
 
             const hideData = document.querySelector(".hide-table-attribute");
             if (hideData) hideData.style.display = "flex";
 
             document.querySelector(".imxp")?.classList.remove("active");
-
         })
         .catch(function (error) {
             console.error(error);
@@ -1264,25 +1290,6 @@ document.getElementById('shape-file').addEventListener('change', function (event
 
 
 
-// export  shapefile///////////////
-function exportShapefile() {
-    var geojson = drawnFeatures.toGeoJSON(); // Convert Leaflet layers to GeoJSON
-    var shapefileContent = shp.write(
-        // Convert GeoJSON to shapefile
-        shp.combine(geojson.features),
-        {
-            type: "FeatureCollection",
-            features: geojson.features,
-        }
-    );
-    var blob = new Blob([shapefileContent], {
-        type: "application/zip",
-    });
-    var downloadLink = document.createElement("a");
-    downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = "exported_shapefile.zip";
-    downloadLink.click();
-}
 
 
 
@@ -1354,29 +1361,170 @@ colors.forEach((color) => {
     })
 })
 
-function showLegend() {
-    document.querySelector(".items").classList.add('afficher')
+
+
+
+/
+
+
+// --- Event hooks ---
+myMap.on("pm:create", (e) => {
+   
+    drawnFeatures.addLayer(e.layer);
+    
+});
+
+myMap.on("pm:edit", (e) => {
+   
+    // already in drawnFeatures
+});
+
+
+
+// --- Robust Reprojection Helper ---
+function reprojectGeoJSON(geojson, sourceProj, targetProj) {
+    if (!geojson || !proj4.defs(sourceProj) || !proj4.defs(targetProj)) {
+        console.error("Invalid GeoJSON or projection definitions.");
+        return null;
+    }
+
+    const transformCoords = (coords) => proj4(sourceProj, targetProj, coords);
+
+    const reprojectGeometry = (geometry) => {
+        if (!geometry || !geometry.coordinates) return;
+
+        switch (geometry.type) {
+            case "Point":
+                geometry.coordinates = transformCoords(geometry.coordinates);
+                break;
+            case "LineString":
+            case "MultiPoint":
+                geometry.coordinates = geometry.coordinates.map(transformCoords);
+                break;
+            case "Polygon":
+            case "MultiLineString":
+                geometry.coordinates = geometry.coordinates.map(ring =>
+                    ring.map(transformCoords)
+                );
+                break;
+            case "MultiPolygon":
+                geometry.coordinates = geometry.coordinates.map(polygon =>
+                    polygon.map(ring => ring.map(transformCoords))
+                );
+                break;
+            case "GeometryCollection":
+                geometry.geometries.forEach(reprojectGeometry);
+                break;
+            default:
+                console.warn(`Unsupported geometry type for reprojection: ${geometry.type}`);
+        }
+    };
+
+    if (geojson.type === "FeatureCollection") {
+        geojson.features.forEach(f => reprojectGeometry(f.geometry));
+    } else if (geojson.type === "Feature") {
+        reprojectGeometry(geojson.geometry);
+    } else if (geojson.type === "Geometry") {
+        reprojectGeometry(geojson);
+    }
+
+    return geojson;
 }
 
+// --- Utility: Download ---
+function downloadFile(content, fileName, mimeType) {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// --- EXPORT GEOJSON ---
+document.getElementById("exportgeo").addEventListener("click", () => {
+    if (drawnFeatures.getLayers().length === 0) {
+        alert("No features to export!");
+        return;
+    }
+
+    const geojsonData = drawnFeatures.toGeoJSON();
+    const reprojectedGeoJSON = reprojectGeoJSON(geojsonData, "EPSG:4326", selectedProj);
+    localStorage.setItem("projectedGeoJSON", JSON.stringify(reprojectedGeoJSON));
+    if (reprojectedGeoJSON) {
+        downloadFile(
+            JSON.stringify(reprojectedGeoJSON, null, 2),
+            "drawn_features.geojson",
+            "application/json"
+        );
+    }
+});
+
+// --- EXPORT KML ---
+document.getElementById("exportkml").addEventListener("click", () => {
+    if (drawnFeatures.getLayers().length === 0) {
+        alert("No features to export!");
+        return;
+    }
+
+    const geojsonData = drawnFeatures.toGeoJSON();
+
+    try {
+        const kmlData = tokml(geojsonData); // KML always in WGS84
+        downloadFile(kmlData, "drawn_features.kml", "application/vnd.google-earth.kml+xml");
+    } catch (e) {
+        console.error("Error converting to KML:", e);
+        alert("Failed to create KML file.");
+    }
+});
 
 
 
+// Restore drawing Data*********
+// Show modal
+document.addEventListener("DOMContentLoaded", () => {
+    const savedGeoJSON = localStorage.getItem("projectedGeoJSON");
+    const restoreModal = document.getElementById("restoreModal"); // ✅ consistent naming
 
+    if (savedGeoJSON && restoreModal) {
+        restoreModal.classList.remove("hidden");
 
+        // Handle buttons inside modal
+        document.getElementById("cancelRestore").addEventListener("click", () => {
+            restoreModal.classList.add("hidden");
+            localStorage.removeItem("projectedGeoJSON"); // optional clear
+        });
 
+        document.getElementById("confirmRestore").addEventListener("click", () => {
+            restoreModal.classList.add("hidden");
+            restoreDrawnItems(); // 🔹 restore features to map
+        });
+    }
+});
 
+// Hide modal function
+function hideRestoreModal() {
+    const modal = document.getElementById("restoreModal");
+    if (modal) modal.classList.add("hidden");
+}
 
+// Restore features from localStorage
+function restoreDrawnItems() {
+    const savedGeoJSON = localStorage.getItem("projectedGeoJSON");
+    if (savedGeoJSON) {
+        const geojsonData = JSON.parse(savedGeoJSON);
 
+        // Add it back to map
+        L.geoJSON(geojsonData, {
+            onEachFeature: (feature, layer) => {
+                layer.bindPopup("Restored Feature");
+            },
+            coordsToLatLng: coordsToLatLng,
+            style: Ethnic2Style,
+        }).addTo(myMap);
 
-
-
-
-
-
-
-
-
-
-
-
+        console.log("Projected GeoJSON restored from localStorage ✅");
+    }
+}
 
